@@ -12,17 +12,33 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
 
+    /**
+     * Get all list of items
+     *
+     * @return void
+     */
     public function index()
     {
         $categories = Category::latest()->get();
         return view('admin.category.index', compact('categories'));
     }
 
+    /**
+     * View for add new record
+     *
+     * @return void
+     */
     public function addCategory()
     {
         return view('admin.category.add');
     }
 
+    /**
+     * Store new record
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(Request $request)
     {
         try {
@@ -56,6 +72,12 @@ class CategoryController extends Controller
         }
     }
 
+    /**
+     * View for edit existing record
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function edit($id)
     {
         $categoryInfo = Category::findOrFail($id);
@@ -63,6 +85,12 @@ class CategoryController extends Controller
         return view('admin.category.edit', compact('categoryInfo'));
     }
 
+    /**
+     * Update existig record
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function update(Request $request)
     {
         try {
@@ -98,6 +126,12 @@ class CategoryController extends Controller
         }
     }
 
+    /**
+     * Delete record
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function delete ($id)
     {
         Category::findOrFail($id)->delete();
