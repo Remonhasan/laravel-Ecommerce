@@ -6,4 +6,11 @@
 
 @section('main-content')
     <h1> Customer Cart Page !</h1>
+
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
+    
 @endsection

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -36,6 +38,23 @@ class ClientController extends Controller
     public function addCart()
     {
         return view('frontend.cart');
+    }
+
+    public function addProductCart (Request $request)
+    {
+        $productId       = $request->product_id;
+        $productPrice    = $request->price;
+        $productQuantity = $request->quantity ?? 1;
+        $totalPrice      = $productPrice * $productQuantity;
+
+        Cart::insert([
+            'product_id' => $productId,
+            'user_id'    => Auth::id(),
+            'quantity'   => $productQuantity,
+            'price'      => $totalPrice
+        ]);
+
+        return redirect()->route('customer.cart')->with('message', 'Item added to cart successfully');
     }
 
     public function checkout()

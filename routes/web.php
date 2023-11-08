@@ -28,12 +28,7 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(ClientController::class)->group(function () {
     Route::get('/category/{id}/{slug}', 'getCategory')->name('customer.category');
     Route::get('/product/{id}/{slug}', 'getProduct')->name('customer.product');
-    Route::get('/cart', 'addCart')->name('customer.cart');
-    Route::get('/checkout', 'checkout')->name('customer.checkout');
-    Route::get('/user-profile', 'userProfile')->name('user.profile');
     Route::get('/new-release', 'newRelease')->name('new.release');
-    Route::get('/todays-deal', 'todaysDeal')->name('todays.deal');
-    Route::get('/customer-service', 'customerService')->name('customer.service');
 });
 
 /*
@@ -43,6 +38,7 @@ Route::controller(ClientController::class)->group(function () {
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::controller(ClientController::class)->group(function () {
         Route::get('/cart', 'addCart')->name('customer.cart');
+        Route::post('/cart-product', 'addProductCart')->name('add.productCart');
         Route::get('/checkout', 'checkout')->name('customer.checkout');
         Route::get('/user-profile', 'userProfile')->name('user.profile');
         Route::get('/user-profile/pending-order', 'pendingOrder')->name('user.pendingOrder');
