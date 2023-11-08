@@ -5,20 +5,35 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Frontend\ClientController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Middleware Group
+
+// Frontend - home
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+});
+
+// Frontend - customer section
+Route::controller(ClientController::class)->group(function () {
+    Route::get('/category', 'getCategory')->name('customer.category');
+    Route::get('/product', 'getProduct')->name('customer.product');
+    Route::get('/cart', 'addCart')->name('customer.cart');
+    Route::get('/checkout', 'checkout')->name('customer.checkout');
+    Route::get('/user-profile', 'userProfile')->name('user.profile');
+    Route::get('/new-release', 'newRelease')->name('new.release');
+    Route::get('/todays-deal', 'todaysDeal')->name('todays.deal');
+    Route::get('/customer-service', 'customerService')->name('customer.service');
+});
+
+// Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
@@ -48,7 +63,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Product
     Route::controller(ProductController::class)->group(function () {
-        
+
         // Get corresponding subcategory by selecting category
         Route::get('/get-subcategories/{categoryId}', 'getSubcategories');
 
