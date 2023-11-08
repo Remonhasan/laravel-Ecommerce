@@ -88,7 +88,7 @@
                         <a href="index.html">Home</a>
 
                         @foreach ($categories as $category)
-                            <a href="fashion.html">{{ $category->name }}</a>
+                            <a href="{{ route('customer.category', [$category->id, $category->slug]) }}">{{ $category->name }}</a>
                         @endforeach
 
                     </div>
@@ -100,7 +100,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                             @foreach ($categories as $category)
-                                <a class="dropdown-item" href="#">{{ $category->name }}</a>
+                                <a class="dropdown-item" href="{{ route('customer.category', [$category->id, $category->slug]) }}">{{ $category->name }}</a>
                             @endforeach
                             
                         </div>

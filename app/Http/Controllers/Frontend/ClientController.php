@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function getCategory()
+    public function getCategory($id)
     {
-        return view('frontend.category');
+        $category = Category::findOrFail($id);
+        $products = Product::where('category_id', $id)->latest()->get();
+        return view('frontend.category', compact('category', 'products'));
     }
 
     public function getProduct()
