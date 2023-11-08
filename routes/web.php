@@ -24,7 +24,7 @@ Route::controller(HomeController::class)->group(function () {
 // Frontend - customer section
 Route::controller(ClientController::class)->group(function () {
     Route::get('/category/{id}/{slug}', 'getCategory')->name('customer.category');
-    Route::get('/product', 'getProduct')->name('customer.product');
+    Route::get('/product/{id}/{slug}', 'getProduct')->name('customer.product');
     Route::get('/cart', 'addCart')->name('customer.cart');
     Route::get('/checkout', 'checkout')->name('customer.checkout');
     Route::get('/user-profile', 'userProfile')->name('user.profile');

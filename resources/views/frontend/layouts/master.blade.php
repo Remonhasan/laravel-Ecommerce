@@ -56,7 +56,7 @@
                         <div class="custom_menu">
                             <ul>
                                 <li><a href="#">Best Sellers</a></li>
-                                <li><a href="{{ route('customer.product') }}">Gift Ideas</a></li>
+                                <li><a href="">Gift Ideas</a></li>
                                 <li><a href="{{ route('new.release') }}">New Releases</a></li>
                                 <li><a href="{{ route('todays.deal') }}">Today's Deals</a></li>
                                 <li><a href="{{ route('customer.service') }}">Customer Service</a></li>

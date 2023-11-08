@@ -10,7 +10,6 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="container" style="margin-top: 100px">
-                        {{-- <h1 class="fashion_taital">{{ $category->name }}</h1> --}}
                         <button type="button" class="btn btn-primary fashion_taital">
                             {{ $category->name }} <span class="badge badge-light">{{ $category->product_count }}</span>
                           </button>
@@ -26,7 +25,7 @@
                                             <div class="tshirt_img"><img src="{{ asset($product->image) }}"></div>
                                             <div class="btn_main">
                                                 <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                                <div class="seemore_bt"><a href="#">See More</a></div>
+                                                <div class="seemore_bt"><a href="{{ route('customer.product', [$product->id, $product->slug]) }}">See More</a></div>
                                             </div>
                                         </div>
                                     </div>

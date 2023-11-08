@@ -31,4 +31,24 @@ class Product extends Model
             ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name')
             ->get();
     }
+
+    public function getProductListById($id)
+    {
+        return DB::table('products')
+            ->leftjoin('categories', 'products.category_id', '=', 'categories.id')
+            ->leftjoin('subcategories', 'products.subcategory_id', '=', 'subcategories.id')
+            ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name')
+            ->where('products.id', $id)
+            ->first();
+    }
+
+    public function getRelatedProduct($subcategoryId)
+    {
+        return DB::table('products')
+            ->leftjoin('categories', 'products.category_id', '=', 'categories.id')
+            ->leftjoin('subcategories', 'products.subcategory_id', '=', 'subcategories.id')
+            ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name')
+            ->where('products.subcategory_id', $subcategoryId)
+            ->latest()->get();
+    }
 }
