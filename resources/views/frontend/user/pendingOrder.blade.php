@@ -1,9 +1,9 @@
 @extends('frontend.layouts.userMaster')
 
 @section('page_title')
-    Profile | nDolish
+    Pending Order | nDolish
 @endsection
 
 @section('user-profile-content')
-    <h1> Welcome ! {{ Auth::user()->name }}</h1>
+    <h1> Welcome ! Pending Order</h1>
 @endsection

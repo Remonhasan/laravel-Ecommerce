@@ -21,7 +21,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
 });
 
-// Frontend - customer section
+/*
+   Frontend - customer section
+   public routes
+*/
 Route::controller(ClientController::class)->group(function () {
     Route::get('/category/{id}/{slug}', 'getCategory')->name('customer.category');
     Route::get('/product/{id}/{slug}', 'getProduct')->name('customer.product');
@@ -31,6 +34,22 @@ Route::controller(ClientController::class)->group(function () {
     Route::get('/new-release', 'newRelease')->name('new.release');
     Route::get('/todays-deal', 'todaysDeal')->name('todays.deal');
     Route::get('/customer-service', 'customerService')->name('customer.service');
+});
+
+/*
+   Frontend - customer section
+   Protected routes
+*/
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::controller(ClientController::class)->group(function () {
+        Route::get('/cart', 'addCart')->name('customer.cart');
+        Route::get('/checkout', 'checkout')->name('customer.checkout');
+        Route::get('/user-profile', 'userProfile')->name('user.profile');
+        Route::get('/user-profile/pending-order', 'pendingOrder')->name('user.pendingOrder');
+        Route::get('/user-profile/history', 'userHistory')->name('user.history');
+        Route::get('/todays-deal', 'todaysDeal')->name('todays.deal');
+        Route::get('/customer-service', 'customerService')->name('customer.service');
+    });
 });
 
 // Admin

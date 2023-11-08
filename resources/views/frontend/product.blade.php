@@ -52,7 +52,7 @@
                                             <h4 class="shirt_text">{{ $relatedProduct->name }}</h4>
                                             <p class="price_text">Price <span style="color: #262626;">$
                                                     {{  $relatedProduct->price }}</span></p>
-                                            <div class="tshirt_img"><img src=""></div>
+                                            <div class="tshirt_img"><img src="{{ asset($relatedProduct->image) }}"></div>
                                             <div class="btn_main">
                                                 <div class="buy_bt"><a href="#">Buy Now</a></div>
                                                 <div class="seemore_bt">

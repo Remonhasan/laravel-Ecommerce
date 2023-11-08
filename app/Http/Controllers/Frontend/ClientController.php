@@ -48,6 +48,16 @@ class ClientController extends Controller
         return view('frontend.profile');
     }
 
+    public function pendingOrder()
+    {
+        return view('frontend.user.pendingOrder');
+    }
+
+    public function userHistory()
+    {
+        return view('frontend.user.history');
+    }
+
     public function newRelease()
     {
         return view('frontend.newRelease');
