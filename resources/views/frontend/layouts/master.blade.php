@@ -1,3 +1,7 @@
+@php
+    $categories = App\Models\Category::latest()->where('status', 1)->get();
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,10 +56,10 @@
                         <div class="custom_menu">
                             <ul>
                                 <li><a href="#">Best Sellers</a></li>
-                                <li><a href="#">Gift Ideas</a></li>
-                                <li><a href="#">New Releases</a></li>
-                                <li><a href="#">Today's Deals</a></li>
-                                <li><a href="#">Customer Service</a></li>
+                                <li><a href="{{ route('customer.product') }}">Gift Ideas</a></li>
+                                <li><a href="{{ route('new.release') }}">New Releases</a></li>
+                                <li><a href="{{ route('todays.deal') }}">Today's Deals</a></li>
+                                <li><a href="{{ route('customer.service') }}">Customer Service</a></li>
                             </ul>
                         </div>
                     </div>
@@ -82,9 +86,11 @@
                     <div id="mySidenav" class="sidenav">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                         <a href="index.html">Home</a>
-                        <a href="fashion.html">Fashion</a>
-                        <a href="electronic.html">Electronic</a>
-                        <a href="jewellery.html">Jewellery</a>
+
+                        @foreach ($categories as $category)
+                            <a href="fashion.html">{{ $category->name }}</a>
+                        @endforeach
+
                     </div>
                     <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png"></span>
                     <div class="dropdown">
@@ -92,9 +98,11 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+
+                            @foreach ($categories as $category)
+                                <a class="dropdown-item" href="#">{{ $category->name }}</a>
+                            @endforeach
+                            
                         </div>
                     </div>
                     <div class="main">
@@ -142,7 +150,7 @@
         <!-- header section end -->
 
         <!-- banner section start -->
-        <div class="banner_section layout_padding">
+        {{-- <div class="banner_section layout_padding">
             <div class="container">
                 <div id="my_slider" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
@@ -179,7 +187,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- banner section end -->
     </div>
     <!-- banner bg main end -->
