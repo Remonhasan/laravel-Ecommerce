@@ -37,7 +37,9 @@ class ClientController extends Controller
 
     public function addCart()
     {
-        return view('frontend.cart');
+        $userId = Auth::id();
+        $carts = Cart::where('user_id', $userId)->latest()->get();
+        return view('frontend.cart', compact('carts'));
     }
 
     public function addProductCart (Request $request)
