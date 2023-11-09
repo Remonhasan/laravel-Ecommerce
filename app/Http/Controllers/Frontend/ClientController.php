@@ -136,7 +136,9 @@ class ClientController extends Controller
 
     public function pendingOrder()
     {
-        $pendingOrders = $this->orderModel->getPendingOrder();
+        $userId        = Auth::id();
+        $pendingOrders = $this->orderModel->getUserPendingOrder($userId);
+        
         return view('frontend.user.pendingOrder', compact('pendingOrders'));
     }
 

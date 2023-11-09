@@ -52,4 +52,15 @@ class Order extends Model
             ->where('orders.status', 'cancled')
             ->get();
     }
+
+    public function getUserPendingOrder($id)
+    {
+        return DB::table('orders')
+            ->leftjoin('products', 'orders.product_id', '=', 'products.id')
+            ->leftjoin('users', 'orders.user_id', '=', 'users.id')
+            ->select('orders.*', 'products.name as product_name', 'users.name as user_name')
+            ->where('orders.user_id', $id)
+            ->where('orders.status', 'pending')
+            ->get();
+    }
 }
