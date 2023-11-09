@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,14 +36,7 @@ class ClientController extends Controller
         return view('frontend.product', compact('product', 'relatedProducts'));
     }
 
-    public function addCart()
-    {
-        $userId = Auth::id();
-        $carts = Cart::where('user_id', $userId)->latest()->get();
-        return view('frontend.cart', compact('carts'));
-    }
-
-    public function addProductCart (Request $request)
+    public function addProductCart(Request $request)
     {
         $productId       = $request->product_id;
         $productPrice    = $request->price;
@@ -56,12 +50,51 @@ class ClientController extends Controller
             'price'      => $totalPrice
         ]);
 
-        return redirect()->route('customer.cart')->with('message', 'Item added to cart successfully');
+        return redirect()->route('customer.cart')->with('message', 'Item added to cart successfully!');
+    }
+
+    public function addCart()
+    {
+        $userId = Auth::id();
+        $carts  = Cart::where('user_id', $userId)->get();
+
+        return view('frontend.cart', compact('carts'));
+    }
+
+    public function cartRemove($id)
+    {
+        Cart::findOrFail($id)->delete();
+
+        return redirect()->route('customer.cart')->with('message', 'Item removed from cart successfully!');
+    }
+
+    public function getShippingAddress()
+    {
+        return view('frontend.user.shippingAddress');
+    }
+
+    public function addShippingAddress(Request $request)
+    {
+        $userId = Auth::id();
+
+        Shipping::insert([
+            'user_id'      => $userId,
+            'phone_number' => $request->phone_number,
+            'city'         => $request->city,
+            'address'      => $request->address,
+            'postal_code'  => $request->postal_code
+        ]);
+
+        return redirect()->route('customer.checkout');
     }
 
     public function checkout()
     {
-        return view('frontend.checkout');
+        $userId          = Auth::id();
+        $carts           = Cart::where('user_id', $userId)->get();
+        $shippingAddress = Shipping::where('user_id', $userId)->first();
+
+        return view('frontend.user.checkout', compact('carts', 'shippingAddress'));
     }
 
     public function userProfile()

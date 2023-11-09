@@ -1,21 +1,26 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.userMaster')
 
 @section('page_title')
-    Cart | nDolish
+    Checkout | nDolish
 @endsection
 
 @section('main-content')
+  
     <div class="row">
-
-        <div class="col-12" style="margin-top: 60px">
-
-            @if (session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session()->get('message') }}
-                </div>
-            @endif
-
+        <div class="col-4" style="margin-top: 80px">
             <div class="box_main">
+                <h3>Product will send at : </h3>
+
+                <p>Phone Number: {{ $shippingAddress->phone_number }} </p>
+                <p>City/Division : {{ $shippingAddress->city }} </p>
+                <p>Street/Address : {{ $shippingAddress->address }} </p>
+                <p>Postal Code : {{ $shippingAddress->postal_code }} </p>
+            </div>
+        </div>
+
+        <div class="col-8" style="margin-top: 80px">
+            <div class="box_main">
+                Your Final Products are :
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
@@ -23,7 +28,6 @@
                             <th>Product Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>Action</th>
                         </tr>
 
                         @php
@@ -42,10 +46,6 @@
                                 <td>{{ $productName }}</td>
                                 <td>{{ $cart->quantity }}</td>
                                 <td>{{ $cart->price }}</td>
-                                <td>
-                                    <a href="{{ route('remove.cart', $cart->id) }}" class="btn btn-warning">Remove</a>
-                                </td>
-
                                 @php
                                     $total = $total + $cart->price;
                                 @endphp
@@ -55,29 +55,26 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            @if ($total > 0)
-                                <td style="font-weight: bold">Total</td>
-                                <td style="font-weight: bold">{{ $total }}</td>
-                            @else
-                                <td>
-                                    <div class="alert alert-warning" role="alert">
-                                        No Items in Cart !
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                            @endif
-
-                            @if ($total > 0)
-                                <td>
-                                    <a href="{{ route('shipping.address') }}" class="btn btn-sm btn-primary">Checkout Now</a>
-                                </td>
-                            @endif
-
+                            <td style="font-weight: bold">Total</td>
+                            <td style="font-weight: bold">{{ $total }}</td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
+        
+        <form action="" method="POST">
+            @csrf 
+
+            <input type="submit" value="Place order" class="btn btn-primary mr-3">
+        </form>
+        <form action="" method="POST">
+            @csrf 
+
+            <input type="submit" value="Cancle order" class="btn btn-danger">
+        </form>
+
+       </div>
     </div>
 @endsection
