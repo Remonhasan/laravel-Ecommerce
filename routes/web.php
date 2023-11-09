@@ -46,9 +46,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         Route::post('/shipping/add', 'addShippingAddress')->name('add.shipping');
         // checkout
         Route::get('/checkout', 'checkout')->name('customer.checkout');
+        // order
+        Route::post('/place-order', 'placeOrder')->name('place.order');
         // user profile 
         Route::get('/user-profile', 'userProfile')->name('user.profile');
         Route::get('/user-profile/pending-order', 'pendingOrder')->name('user.pendingOrder');
+        Route::get('/user-profile/approved-order', 'approvedOrder')->name('user.approvedOrder');
         Route::get('/user-profile/history', 'userHistory')->name('user.history');
         // others
         Route::get('/todays-deal', 'todaysDeal')->name('todays.deal');
@@ -102,6 +105,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Order
     Route::controller(OrderController::class)->group(function () {
         Route::get('/admin/order/pending', 'pendingOrder')->name('pending.order');
+        Route::get('/admin/order/approve/{id}', 'approvePendingOrder')->name('approve.order');
+        Route::get('/admin/order/cancle/{id}', 'cancledPendingOrder')->name('cancled.order');
+        Route::get('/admin/order/all-complete', 'allCompletedOrder')->name('all.completed.order');
+        Route::get('/admin/order/all-cancle', 'allCancledOrder')->name('all.cancled.order');
     });
 });
 

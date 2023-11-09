@@ -7,6 +7,7 @@
                     <ul>
                         <li><a href="{{ route('user.profile') }}">Dashboard</a></li>
                         <li><a href="{{ route('user.pendingOrder') }}">Pending Orders</a></li>
+                        <li><a href="{{ route('user.approvedOrder') }}">Approved Orders</a></li>
                         <li><a href="{{ route('user.history') }}">History</a></li>
                         <li><a href="">Logout</a></li>
                     </ul>

@@ -119,14 +119,14 @@
         </li>
 
         <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('all.completed.order') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-check-to-slot"></i>
                 <div data-i18n="Email">Completed Orders</div>
             </a>
         </li>
 
         <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('all.cancled.order') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-rectangle-xmark"></i>
                 <div data-i18n="Email">Cancled Orders</div>
             </a>

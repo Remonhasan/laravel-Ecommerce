@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Auth;
 class ClientController extends Controller
 {
     protected $productModel;
+    protected $orderModel;
 
     public function __construct()
     {
-        $this->productModel = new Product;
+        $this->productModel = new Product();
+        $this->orderModel = new Order();
     }
 
     public function getCategory($id)
@@ -97,6 +100,35 @@ class ClientController extends Controller
         return view('frontend.user.checkout', compact('carts', 'shippingAddress'));
     }
 
+    public function placeOrder(Request $request)
+    {
+        $userId          = Auth::id();
+        $carts           = Cart::where('user_id', $userId)->get();
+        $shippingAddress = Shipping::where('user_id', $userId)->first();
+
+        foreach ($carts as $cartItem) {
+            Order::insert([
+                'user_id'      => $userId,
+                'product_id'   => $cartItem->product_id,
+                'phone_number' => $shippingAddress->phone_number,
+                'city'         => $shippingAddress->city,
+                'address'      => $shippingAddress->address,
+                'postal_code'  => $shippingAddress->postal_code,
+                'quantity'     => $cartItem->quantity,
+                'total_price'  => $cartItem->price
+            ]);
+
+            // Delete form cart after place order
+            $cartId = $cartItem->id;
+            Cart::findOrFail($cartId)->delete();
+        }
+
+        // Delete shipping address after place order
+        Shipping::where('user_id', $userId)->first()->delete();
+
+        return redirect()->route('user.pendingOrder')->with('message', 'Order has been placed successfully!');
+    }
+
     public function userProfile()
     {
         return view('frontend.profile');
@@ -104,7 +136,14 @@ class ClientController extends Controller
 
     public function pendingOrder()
     {
-        return view('frontend.user.pendingOrder');
+        $pendingOrders = $this->orderModel->getPendingOrder();
+        return view('frontend.user.pendingOrder', compact('pendingOrders'));
+    }
+
+    public function approvedOrder()
+    {
+        $approvedOrders = $this->orderModel->getAllCompletedOrder();
+        return view('frontend.user.approvedOrder', compact('approvedOrders'));
     }
 
     public function userHistory()

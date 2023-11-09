@@ -3,11 +3,59 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    public function pendingOrder (){
-        return view('admin.order.pendingOrder');
+    protected $productModel;
+    protected $orderModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+        $this->orderModel = new Order();
+    }
+
+    public function pendingOrder()
+    {
+
+        $pendingOrders = $this->orderModel->getPendingOrder();
+        return view('admin.order.pendingOrder', compact('pendingOrders'));
+    }
+
+    public function approvePendingOrder($id)
+    {
+        $invoiceCode = strtoupper(Str::random(4) . mt_rand(1000, 9999));
+
+        Order::where('id', $id)->update([
+            'invoice_code' => $invoiceCode,
+            'status' => 'approved'
+        ]);
+
+        return redirect()->route('pending.order')->with('message', 'Order approved successfully');
+    }
+
+    public function cancledPendingOrder($id)
+    {
+        Order::where('id', $id)->update([
+            'status' => 'cancled'
+        ]);
+
+        return redirect()->route('pending.order')->with('message', 'Order cancled successfully');
+    }
+
+    public function allCompletedOrder ()
+    {
+        $completedOrders = $this->orderModel->getAllCompletedOrder();
+        return view('admin.order.completedOrder', compact('completedOrders'));
+    }
+
+    public function allCancledOrder ()
+    {
+        $cancledOrders = $this->orderModel->getAllCancledOrder();
+        return view('admin.order.cancledOrder', compact('cancledOrders'));
     }
 }

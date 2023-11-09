@@ -64,15 +64,17 @@
             </div>
         </div>
         
+        
         <form action="" method="POST">
             @csrf 
 
-            <input type="submit" value="Place order" class="btn btn-primary mr-3">
+            <input type="submit" value="Cancle order" class="btn btn-danger mr-3">
         </form>
-        <form action="" method="POST">
+
+        <form action="{{ route('place.order') }}" method="POST">
             @csrf 
 
-            <input type="submit" value="Cancle order" class="btn btn-danger">
+            <input type="submit" value="Place order" class="btn btn-primary">
         </form>
 
        </div>
