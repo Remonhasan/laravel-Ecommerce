@@ -13,23 +13,32 @@
 
     <table class="table">
         <tr>
-            <th>Product Name</th>
+            <th>Product Name & Quantity</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Status</th>
         </tr>
-        @foreach ($pendingOrders as $pendingOrder)
+        @foreach ($orders as $order)
             <tr>
-                <td>{{ $pendingOrder->product_name }}</td>
-                <td>{{ $pendingOrder->quantity }}</td>
-                <td>{{ $pendingOrder->total_price }}</td>
                 <td>
-                    @if ($pendingOrder->status == 'pending')
-                        <span class="badge bg-label-warning">{{ $pendingOrder->status }}</span>
-                    @elseif($pendingOrder->status == 'approved')
-                        <span class="badge bg-label-success">{{ $pendingOrder->status }}</span>
+                @foreach($orderProducts as $orderProduct)
+                    <ul>
+                        <li>{{ $orderProduct-> product_name }}
+                        ({{ $orderProduct-> quantity }})
+                        </li>
+                    </ul>
+                @endforeach
+               </td>
+                </td>
+                <td>{{ $order->quantity }}</td>
+                <td>{{ $order->total_price }}</td>
+                <td>
+                    @if ($order->status == 'pending')
+                        <span class="badge bg-label-warning">{{ $order->status }}</span>
+                    @elseif($order->status == 'approved')
+                        <span class="badge bg-label-success">{{ $order->status }}</span>
                     @else
-                        <span class="badge bg-label-danger">{{ $pendingOrder->status }}</span>
+                        <span class="badge bg-label-danger">{{ $order->status }}</span>
                     @endif
                 </td>
             </tr>

@@ -28,6 +28,7 @@
 
                         @php
                             $total = 0;
+                            $totalQuantity = 0;
                         @endphp
 
                         @foreach ($carts as $cart)
@@ -48,15 +49,17 @@
 
                                 @php
                                     $total = $total + $cart->price;
+                                    $totalQuantity = $totalQuantity + $cart->quantity;
                                 @endphp
                             </tr>
                         @endforeach
 
                         <tr>
                             <td></td>
-                            <td></td>
+                            
                             @if ($total > 0)
                                 <td style="font-weight: bold">Total</td>
+                                <td style="font-weight: bold">{{ $totalQuantity }}</td>
                                 <td style="font-weight: bold">{{ $total }}</td>
                             @else
                                 <td>

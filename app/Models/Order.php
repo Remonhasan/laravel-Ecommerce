@@ -13,11 +13,6 @@ class Order extends Model
     protected $fillable = [
         'invoice_code',
         'user_id',
-        'product_id',
-        'phone_number',
-        'address',
-        'city',
-        'postal_code',
         'quantity',
         'total_price',
         'status'
@@ -26,9 +21,16 @@ class Order extends Model
     public function getPendingOrder()
     {
         return DB::table('orders')
-            ->leftjoin('products', 'orders.product_id', '=', 'products.id')
+            ->leftjoin('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->leftjoin('products', 'order_products.product_id', '=', 'products.id')
             ->leftjoin('users', 'orders.user_id', '=', 'users.id')
-            ->select('orders.*', 'products.name as product_name', 'users.name as user_name')
+            ->select(
+                'orders.*',
+                'products.name as product_name',
+                'users.name as user_name',
+                'order_products.quantity as quantity',
+                'order_products.price as price'
+            )
             ->where('orders.status', 'pending')
             ->get();
     }
@@ -56,9 +58,16 @@ class Order extends Model
     public function getUserPendingOrder($id)
     {
         return DB::table('orders')
-            ->leftjoin('products', 'orders.product_id', '=', 'products.id')
+            ->leftjoin('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->leftjoin('products', 'order_products.product_id', '=', 'products.id')
             ->leftjoin('users', 'orders.user_id', '=', 'users.id')
-            ->select('orders.*', 'products.name as product_name', 'users.name as user_name')
+            ->select(
+                'orders.*',
+                'products.name as product_name',
+                'users.name as user_name',
+                'order_products.quantity as quantity',
+                'order_products.price as price'
+            )
             ->where('orders.user_id', $id)
             ->where('orders.status', 'pending')
             ->get();

@@ -32,6 +32,7 @@
 
                         @php
                             $total = 0;
+                            $totalQuantity = 0;
                         @endphp
 
                         @foreach ($carts as $cart)
@@ -48,14 +49,15 @@
                                 <td>{{ $cart->price }}</td>
                                 @php
                                     $total = $total + $cart->price;
+                                    $totalQuantity = $totalQuantity + $cart->quantity;
                                 @endphp
                             </tr>
                         @endforeach
 
                         <tr>
                             <td></td>
-                            <td></td>
                             <td style="font-weight: bold">Total</td>
+                            <td style="font-weight: bold">{{ $totalQuantity }}</td>
                             <td style="font-weight: bold">{{ $total }}</td>
                             <td></td>
                         </tr>
@@ -73,7 +75,9 @@
 
         <form action="{{ route('place.order') }}" method="POST">
             @csrf 
-
+            
+            <input type="hidden" value="{{ $totalQuantity }}" name="total_quantity" />
+            <input type="hidden" value="{{ $total }}" name="total_price" />
             <input type="submit" value="Place order" class="btn btn-primary">
         </form>
 
