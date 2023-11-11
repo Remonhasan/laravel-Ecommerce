@@ -179,15 +179,6 @@ class ClientController extends Controller
         }
     }
 
-    public function orderPayment()
-    {
-        $userId          = Auth::id();
-        $orders           = Order::where('user_id', $userId)->get();
-        $orderId = $orders[0]['id'];
-        $orderProducts = $this->orderProductModel->getOrderedProducts($orderId);
-
-        return view('frontend.user.payment', compact('orders', 'orderProducts'));
-    }
 
     public function stripePayment(Request $request)
     {

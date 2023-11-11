@@ -49,7 +49,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         // order
         Route::post('/place-order', 'placeOrder')->name('place.order');
         // payment - stripe
-        Route::get('/payment', 'orderPayment')->name('order.payment');
         Route::get('/payment/stripe', 'stripePayment')->name('stripe.payment');
         Route::get('/payment/stripe/success/{order_id}', 'stripePaymentSuccess')->name('stripe.payment.success');
         // user profile 
