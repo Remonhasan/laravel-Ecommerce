@@ -110,7 +110,9 @@ class ClientController extends Controller
         $userId          = Auth::id();
         $carts           = Cart::where('user_id', $userId)->get();
         $shippingAddress = Shipping::where('user_id', $userId)->first();
-
+        $checkTotalQuantity = $request->total_quantity;
+        $checkTotalPrice = $request->total_price;
+        
         $result = Order::insert([
             'user_id'      => $userId,
             'quantity'     => $request->total_quantity,
@@ -137,18 +139,24 @@ class ClientController extends Controller
                     'price'        => $cartItem->price
                 ]);
 
-                // Delete form cart after place order
+                // // Delete form cart after place order
                 $cartId = $cartItem->id;
                 Cart::findOrFail($cartId)->delete();
             }
-        } else {
-            return redirect()->back()->with('message', 'Something went wrong!');
-        }
+        } 
 
-        // Delete shipping address after place order
+        //Delete shipping address after place order
         Shipping::where('user_id', $userId)->first()->delete();
 
-        return redirect()->route('user.pendingOrder')->with('message', 'Order has been placed successfully!');
+        // Get date after order placed
+        $placeOrders = $this->orderModel->getPlacedOrders($userId,$checkTotalQuantity,$checkTotalPrice);
+       
+        $placeOrderId = $placeOrders->id;
+        $placeOrder = (object) ($placeOrders);
+
+        $placeOrderDetails = OrderProduct::where('order_id', $placeOrderId)->get();
+        
+        return view('frontend.user.checkout', compact('checkTotalQuantity', 'checkTotalPrice'));
     }
 
     public function userProfile()
@@ -160,19 +168,23 @@ class ClientController extends Controller
     {
         $userId        = Auth::id();
         $orders = Order::where('user_id', $userId)->where('status', 'pending')->get();
-        $userName = User::where('id', $userId);
-        $oderId = $orders[0]['id'];
-        $orderProducts = $this->orderProductModel->getOrderedProducts($oderId);
+        if (filled($orders)) {
+            $userName = User::where('id', $userId);
+            $oderId = $orders[0]['id'];
+            $orderProducts = $this->orderProductModel->getOrderedProducts($oderId);
 
-        return view('frontend.user.pendingOrder', compact('orderProducts', 'orders', 'userName'));
+            return view('frontend.user.pendingOrder', compact('orderProducts', 'orders', 'userName'));
+        } else {
+            return redirect()->route('user.profile');
+        }
     }
 
     public function orderPayment()
     {
         $userId          = Auth::id();
         $orders           = Order::where('user_id', $userId)->get();
-        $oderId = $orders[0]['id'];
-        $orderProducts = $this->orderProductModel->getOrderedProducts($oderId);
+        $orderId = $orders[0]['id'];
+        $orderProducts = $this->orderProductModel->getOrderedProducts($orderId);
 
         return view('frontend.user.payment', compact('orders', 'orderProducts'));
     }
@@ -202,6 +214,7 @@ class ClientController extends Controller
             'allow_promotion_codes' => true,
         ]);
 
+
         return redirect($response['url']);
     }
 
@@ -217,11 +230,11 @@ class ClientController extends Controller
 
             Order::findOrFail($orderId)->update([
                 'invoice_code' => $invoiceCode,
-                'status'   => 'paid' 
+                'status'   => 'paid'
             ]);
         }
 
-        return redirect()->route('order.payment')->with('message', 'Payment successfully!');
+        return redirect()->route('user.profile')->with('message', 'Payment successfully!');
     }
 
     public function approvedOrder()

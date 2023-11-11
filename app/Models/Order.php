@@ -72,4 +72,31 @@ class Order extends Model
             ->where('orders.status', 'pending')
             ->get();
     }
+
+    public function getOrderId($userId, $totalQuantity, $totalPrice)
+    {
+        return DB::table('orders')
+            ->where('orders.user_id', $userId)
+            ->where('orders.quantity', $totalQuantity)
+            ->where('orders.total_price', $totalPrice)
+            ->where('orders.status', 'pending')
+            ->value('orders.id');
+    }
+
+    public function getPlacedOrders($userId, $totalQuantity, $totalPrice)
+    {
+        return DB::table('orders')
+            ->leftjoin('users', 'orders.user_id', '=', 'users.id')
+            ->where('orders.user_id', $userId)
+            ->where('orders.quantity', $totalQuantity)
+            ->where('orders.total_price', $totalPrice)
+            ->select(
+                'orders.*',
+                'users.name as user_name',
+                'orders.quantity as placed_quantity',
+                'orders.total_price as placed_price'
+            )
+            ->where('orders.status', 'pending')
+            ->first();
+    }
 }
