@@ -105,18 +105,27 @@
                             
                         </div>
                     </div>
+
+                    <!-- Search product start-->
                     <div class="main">
-                        <!-- Another variation with a button -->
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search this blog">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button"
-                                    style="background-color: #f26522; border-color:#f26522 ">
-                                    <i class="fa fa-search"></i>
-                                </button>
+                        <form action="{{ url('search-product') }}" method="GET">
+                            @csrf
+
+                            <div class="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="Search product...">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-secondary" type="button"
+                                            style="background-color: #f26522; border-color:#f26522 ">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
+                    <!-- Search product end-->
+
                     <div class="header_box">
                         <div class="lang_box ">
                             <a href="#" title="Language" class="nav-link" data-toggle="dropdown"

@@ -19,6 +19,7 @@ Route::get('/dashboard', function () {
 // Frontend - home
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
+    Route::get('/search-product', 'searchProduct')->name('search.product');
 });
 
 /*
