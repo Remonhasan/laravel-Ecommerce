@@ -72,7 +72,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="logo"><a href="index.html"><img src="images/logo.png"></a></div>
+                        <div class="logo">
+                            <a href="{{ route('home') }}">
+                            <h1 style="color: white; font-weight: bold; text-decoration-color: white;">nDolish</h1>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,14 +89,14 @@
                 <div class="containt_main">
                     <div id="mySidenav" class="sidenav">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                        <a href="index.html">Home</a>
+                        <a href="{{ route('home') }}">Home</a>
 
                         @foreach ($categories as $category)
                             <a href="{{ route('customer.category', [$category->id, $category->slug]) }}">{{ $category->name }}</a>
                         @endforeach
 
                     </div>
-                    <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png"></span>
+                    <span class="toggle_icon" onclick="openNav()"><img src="{{ asset('frontend/images/toggle-icon.png') }}"></span>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category
@@ -126,30 +130,49 @@
                     </div>
                     <!-- Search product end-->
 
-                    <div class="header_box">
+                    <div class="header_box" style="margin-bottom: 5px">
                         <div class="lang_box ">
                             <a href="#" title="Language" class="nav-link" data-toggle="dropdown"
                                 aria-expanded="true">
-                                <img src="images/flag-uk.png" alt="flag" class="mr-2 " title="United Kingdom">
+                                <img src="{{ asset('frontend/images/flag-uk.png') }}" alt="flag" class="mr-2 " title="United Kingdom">
                                 English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
                             </a>
                             <div class="dropdown-menu ">
                                 <a href="#" class="dropdown-item">
-                                    <img src="images/flag-france.png" class="mr-2" alt="flag">
+                                    <img src="{{ asset('frontend/images/flag-france.png') }}" class="mr-2" alt="flag">
                                     French
                                 </a>
                             </div>
                         </div>
-                        <div class="login_menu">
+                        <div class="login_menu" style="margin-bottom: 5px">
                             <ul>
-                                <li><a href="#">
-                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        <span class="padding_10">Cart</span></a>
-                                </li>
-                                <li><a href="#">
+
+                                <!-- Authentication -->
+                                @auth 
+                                    <li><a href="{{ route('user.profile') }}">
                                         <i class="fa fa-user" aria-hidden="true"></i>
-                                        <span class="padding_10">Cart</span></a>
-                                </li>
+                                        <span class="padding_10">Dashboard</span></a>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                         
+                                            <x-dropdown-link :href="route('logout')"
+                                                    onclick="event.preventDefault();
+                                                                this.closest('form').submit();">
+                                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                {{ __('Log Out') }}
+                                            </x-dropdown-link>
+                                            
+                                        </form>
+                                    </li>
+                                @else 
+                                    <li><a href="{{ route('login') }}">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <span class="padding_10">Account</span></a>
+                                    </li>
+                                @endauth
+                                
                             </ul>
                         </div>
                     </div>

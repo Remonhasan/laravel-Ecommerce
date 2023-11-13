@@ -6,6 +6,7 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfAuthenticated
@@ -21,7 +22,17 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+
+                $userId = Auth::id();
+                $roleId   = DB::table('role_user')->where('user_id', $userId)->value('role_id');
+                $roleName = DB::table('roles')->where('id', $roleId)->value('name');
+
+                if ($roleName == 'user') {
+                    return redirect()->route('user.profile');
+                }
+                
+                return redirect()->route('admin.dashboard');
+                // return redirect(RouteServiceProvider::HOME);
             }
         }
 

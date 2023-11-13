@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->where('status', 1)->get();
+        $products = Product::latest()->where('status', 1)->paginate(3);
 
         return view('frontend.home', compact('products'));
     }
@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function searchProduct(Request $request)
     {
         $searchItem       = $request->search;
-        $searchedProducts = Product::where('name', 'like', '%' . $searchItem . '%')->paginate(3);
+        $searchedProducts = Product::where('name', 'like', '%' . $searchItem . '%')->where('status', 1)->paginate(3);
 
         return view('frontend.searchProduct', compact('searchedProducts'));
     }
