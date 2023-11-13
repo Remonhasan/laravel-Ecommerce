@@ -67,6 +67,14 @@
 
                 </table>
             </div>
+
+        </div>
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-12">
+                <span style="padding-top: 20px">
+                    {{ $categories->links('pagination::bootstrap-5') }}
+                </span>
+            </div>
         </div>
     </div>
 @endsection

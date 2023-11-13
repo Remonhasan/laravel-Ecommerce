@@ -22,6 +22,6 @@ class Subcategory extends Model
         return DB::table('subcategories')
             ->leftjoin('categories', 'subcategories.category_id', '=', 'categories.id')
             ->select('subcategories.*', 'categories.name as category_name')
-            ->get();
+            ->paginate(5);
     }
 }

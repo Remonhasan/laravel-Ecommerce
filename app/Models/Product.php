@@ -29,7 +29,7 @@ class Product extends Model
             ->leftjoin('categories', 'products.category_id', '=', 'categories.id')
             ->leftjoin('subcategories', 'products.subcategory_id', '=', 'subcategories.id')
             ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name')
-            ->get();
+            ->paginate(5);
     }
 
     public function getProductListById($id)
