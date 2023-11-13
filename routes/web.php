@@ -54,7 +54,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         Route::get('/payment/stripe/success/{order_id}', 'stripePaymentSuccess')->name('stripe.payment.success');
         // user profile 
         Route::get('/user-profile', 'userProfile')->name('user.profile');
-        Route::get('/user-profile/pending-order', 'pendingOrder')->name('user.pendingOrder');
+        Route::get('/user-profile/order', 'pendingOrder')->name('user.pendingOrder');
         Route::get('/user-profile/approved-order', 'approvedOrder')->name('user.approvedOrder');
         Route::get('/user-profile/history', 'userHistory')->name('user.history');
         // others

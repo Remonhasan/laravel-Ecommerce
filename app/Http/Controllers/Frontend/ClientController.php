@@ -167,7 +167,7 @@ class ClientController extends Controller
     public function pendingOrder()
     {
         $userId = Auth::id();
-        $orders = Order::where('user_id', $userId)->where('status', 'pending')->get();
+        $orders = Order::where('user_id', $userId)->paginate(1);
 
         if (filled($orders)) {
             $userName      = User::where('id', $userId);

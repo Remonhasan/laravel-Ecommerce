@@ -45,4 +45,12 @@
         @endforeach
 
     </table>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <span style="padding-top: 20px">
+                {{ $orders->links('pagination::bootstrap-5') }}
+            </span>
+        </div>
+    </div>
 @endsection
