@@ -55,6 +55,7 @@
                     <div class="col-sm-12">
                         <div class="custom_menu">
                             <ul>
+                                <li><a href="{{ route('home') }}">Home</a></li>
                                 <li><a href="#">Best Sellers</a></li>
                                 <li><a href="">Gift Ideas</a></li>
                                 <li><a href="{{ route('new.release') }}">New Releases</a></li>

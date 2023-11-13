@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\CustomerEmail;
@@ -24,8 +25,13 @@ class OrderController extends Controller
     public function pendingOrder()
     {
 
-        $pendingOrders = $this->orderModel->getPendingOrder();
-        return view('admin.order.pendingOrder', compact('pendingOrders'));
+        // $pendingOrders = $this->orderModel->getPendingOrder();
+        $pendingOrders = Order::where('status', 'pending')->get();
+        $orderId = $pendingOrders[0]['id'];
+        $pendingOrderProducts = OrderProduct::where('order_id', $orderId)->get();
+        $pendingOrderAddress = OrderProduct::where('order_id', $orderId)->first();
+    
+        return view('admin.order.pendingOrder', compact('pendingOrders', 'pendingOrderProducts', 'pendingOrderAddress'));
     }
 
     public function approvePendingOrder($id)

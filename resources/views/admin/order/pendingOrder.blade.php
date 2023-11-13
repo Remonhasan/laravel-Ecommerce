@@ -39,16 +39,31 @@
                 <tbody class="table-border-bottom-0">
                     @foreach ($pendingOrders as $pendingOrder)
                         <tr>
-                            <td>{{ $pendingOrder->user_name }}</td>
+                            @php 
+                             $userName = App\Models\User::where('id', $pendingOrder->user_id)->value('name');
+                            @endphp 
+                            <td>
+                                <span class="badge bg-label-info">{{ $pendingOrder->invoice_code }}</span>
+                                {{ $userName }}
+                            </td>
                             <td>
                                 <ul>
-                                    <li>Phone Number : {{ $pendingOrder->phone_number}}</li>
-                                    <li>Address : {{ $pendingOrder->address}}</li>
-                                    <li>City : {{ $pendingOrder->city}}</li>
-                                    <li>Postal Code : {{ $pendingOrder->postal_code}}</li>
+                                    <li>Phone Number : {{ $pendingOrderAddress->phone_number}}</li>
+                                    <li>Address : {{ $pendingOrderAddress->address}}</li>
+                                    <li>City : {{ $pendingOrderAddress->city}}</li>
+                                    <li>Postal Code : {{ $pendingOrderAddress->postal_code}}</li>
                                 </ul>
                             </td>
-                            <td>{{ $pendingOrder->product_name }}</td>
+                            <td>
+                                @foreach($pendingOrderProducts as $pendingOrderProduct )
+                                <ul>
+                                    @php 
+                                     $productName = App\Models\Product::where('id', $pendingOrderProduct->product_id)->value('name');
+                                    @endphp 
+                                    <li>{{ $productName }}</li>
+                                </ul>
+                                @endforeach
+                            </td>
                             <td>{{ $pendingOrder->quantity }}</td>
                             <td>{{ $pendingOrder->total_price }}</td>
                             <td>

@@ -67,9 +67,9 @@
             </a>
         </li>
 
-        <!-- Category start -->
+        <!-- Collection start -->
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Category</span>
+            <span class="menu-header-text">Collections</span>
         </li>
 
         <li class="menu-item">
@@ -78,24 +78,12 @@
                 <div class="ml-5"> Category</div>
             </a>
         </li>
-        <!-- Category end -->
-
-        <!-- Sub Category start -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Sub Category</span>
-        </li>
 
         <li class="menu-item">
             <a href="{{ route('all.subcategory') }}" class="menu-link">
                 <i class="menu-icon fa-brands fa-squarespace"></i>
                 <div data-i18n="Email">Sub Category</div>
             </a>
-        </li>
-        <!-- Sub Category end -->
-
-        <!-- Product start -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Product</span>
         </li>
 
         <li class="menu-item">
@@ -104,11 +92,12 @@
                 <div data-i18n="Email">Product</div>
             </a>
         </li>
-        <!-- Product end -->
+        <!-- Collection end -->
+
 
         <!-- Order start -->
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Oder</span>
+            <span class="menu-header-text">Oders</span>
         </li>
 
         <li class="menu-item">
