@@ -30,13 +30,8 @@ class OrderController extends Controller
 
     public function approvePendingOrder($id)
     {
-        $invoiceCode = strtoupper(Str::random(4) . mt_rand(1000, 9999));
-
-        // $customerId = Order::where('id', $id)->value('user_id');
-        // $customerInvoiceCode = Order::where('id', $id)->value('invoice_code');
-
+        
         Order::where('id', $id)->update([
-            'invoice_code' => $invoiceCode,
             'status' => 'approved'
         ]);
 

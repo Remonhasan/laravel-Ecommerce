@@ -129,7 +129,7 @@ class ClientController extends Controller
             foreach ($carts as $cartItem) {
 
                 OrderProduct::insert([
-                    'order_id'   => $order->id,
+                    'order_id'     => $order->id,
                     'product_id'   => $cartItem->product_id,
                     'phone_number' => $shippingAddress->phone_number,
                     'city'         => $shippingAddress->city,
@@ -139,7 +139,7 @@ class ClientController extends Controller
                     'price'        => $cartItem->price
                 ]);
 
-                // // Delete form cart after place order
+                // Delete form cart after place order
                 $cartId = $cartItem->id;
                 Cart::findOrFail($cartId)->delete();
             }
@@ -152,7 +152,7 @@ class ClientController extends Controller
         $placeOrders = $this->orderModel->getPlacedOrders($userId,$checkTotalQuantity,$checkTotalPrice);
        
         $placeOrderId = $placeOrders->id;
-        $placeOrder = (object) ($placeOrders);
+        $placeOrder   = (object) ($placeOrders);
 
         $placeOrderDetails = OrderProduct::where('order_id', $placeOrderId)->get();
         
@@ -166,11 +166,12 @@ class ClientController extends Controller
 
     public function pendingOrder()
     {
-        $userId        = Auth::id();
+        $userId = Auth::id();
         $orders = Order::where('user_id', $userId)->where('status', 'pending')->get();
+
         if (filled($orders)) {
-            $userName = User::where('id', $userId);
-            $oderId = $orders[0]['id'];
+            $userName      = User::where('id', $userId);
+            $oderId        = $orders[0]['id'];
             $orderProducts = $this->orderProductModel->getOrderedProducts($oderId);
 
             return view('frontend.user.pendingOrder', compact('orderProducts', 'orders', 'userName'));
@@ -182,11 +183,12 @@ class ClientController extends Controller
 
     public function stripePayment(Request $request)
     {
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $stripe      = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $redirectUrl = route('stripe.payment.success', ['order_id' => $request->order_id]) . '?session_id={CHECKOUT_SESSION_ID}';
+
         $response = $stripe->checkout->sessions->create([
-            'success_url' => $redirectUrl,
-            'customer_email' => 'remon@yopmail.com',
+            'success_url'          => $redirectUrl,
+            'customer_email'       => 'remon@yopmail.com',
             'payment_method_types' => ['link', 'card'],
             'line_items' => [
                 [
@@ -195,13 +197,13 @@ class ClientController extends Controller
                             'name' => 'Product',
                         ],
                         'unit_amount' => 100 * $request->price,
-                        'currency' => 'USD',
+                        'currency'    => 'USD',
                     ],
                     'quantity' => 1
                 ],
             ],
 
-            'mode' => 'payment',
+            'mode'                  => 'payment',
             'allow_promotion_codes' => true,
         ]);
 
@@ -221,7 +223,7 @@ class ClientController extends Controller
 
             Order::findOrFail($orderId)->update([
                 'invoice_code' => $invoiceCode,
-                'status'   => 'paid'
+                'status'       => 'paid'
             ]);
         }
 
