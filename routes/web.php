@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Frontend\ClientController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -109,6 +110,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Order
     Route::controller(OrderController::class)->group(function () {
         Route::get('/admin/order/pending', 'pendingOrder')->name('pending.order');
+        Route::get('/admin/order/approve/{id}', 'approvePendingOrder')->name('approve.order');
+        Route::get('/admin/order/cancle/{id}', 'cancledPendingOrder')->name('cancled.order');
+        Route::get('/admin/order/all-complete', 'allCompletedOrder')->name('all.completed.order');
+        Route::get('/admin/order/all-cancle', 'allCancledOrder')->name('all.cancled.order');
+    });
+
+     // Order
+     Route::controller(ReportController::class)->group(function () {
+        Route::get('/admin/report/total-sales', 'totalSaleReport')->name('report.total.sale');
         Route::get('/admin/order/approve/{id}', 'approvePendingOrder')->name('approve.order');
         Route::get('/admin/order/cancle/{id}', 'cancledPendingOrder')->name('cancled.order');
         Route::get('/admin/order/all-complete', 'allCompletedOrder')->name('all.completed.order');

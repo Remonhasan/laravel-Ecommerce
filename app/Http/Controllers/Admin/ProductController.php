@@ -98,7 +98,8 @@ class ProductController extends Controller
                     'subcategory_id'    => $subcategoryId,
                     'image'             => $imageUrl,
                     'slug'              => strtolower(str_replace(' ', '-', $request->name)),
-                    'status'            => $request->status
+                    'status'            => $request->status,
+                    'created_at'        => now()
                 ]);
 
                 Category::where('id', $categoryId)->increment('product_count', 1);

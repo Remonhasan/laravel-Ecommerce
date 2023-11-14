@@ -15,7 +15,8 @@ class Order extends Model
         'user_id',
         'quantity',
         'total_price',
-        'status'
+        'status',
+        'created_at'
     ];
 
     public function getPendingOrder()
@@ -98,5 +99,22 @@ class Order extends Model
             )
             ->where('orders.status', 'pending')
             ->first();
+    }
+
+    public function getTotalSaleReportByOrderId($orderId)
+    {
+        return DB::table('orders')
+            ->leftjoin('users', 'orders.user_id', '=', 'users.id')
+            ->leftjoin('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->leftjoin('products', 'order_products.product_id', '=', 'products.id')
+            ->select(
+                'orders.*',
+                'users.name as user_name',
+                'products.name as product_name',
+                'orders.quantity as order_quantity',
+                'orders.total_price as order_total_price'
+            )
+            ->where('order_products.order_id', $orderId)
+            ->get();
     }
 }

@@ -60,7 +60,7 @@
     <ul class="menu-inner py-1">
 
         <!-- Dashboards -->
-        <li class="menu-item active open">
+        <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active open' : '' }}">
             <a href="{{ route('admin.dashboard') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-house"></i>
                 <div data-i18n="Dashboards">Dashboard</div>
@@ -72,21 +72,21 @@
             <span class="menu-header-text">Collections</span>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('all.category') ? 'active open' : '' }}">
             <a href="{{ route('all.category') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-clipboard"></i>
                 <div class="ml-5"> Category</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('all.subcategory') ? 'active open' : '' }}">
             <a href="{{ route('all.subcategory') }}" class="menu-link">
                 <i class="menu-icon fa-brands fa-squarespace"></i>
                 <div data-i18n="Email">Sub Category</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('all.product') ? 'active open' : '' }}">
             <a href="{{ route('all.product') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-shirt"></i>
                 <div data-i18n="Email">Product</div>
@@ -100,27 +100,40 @@
             <span class="menu-header-text">Oders</span>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('pending.order') ? 'active open' : '' }}">
             <a href="{{ route('pending.order') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-eject"></i>
                 <div data-i18n="Email">Pending Oders</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('all.completed.order') ? 'active open' : '' }}">
             <a href="{{ route('all.completed.order') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-check-to-slot"></i>
                 <div data-i18n="Email">Completed Orders</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('all.cancled.order') ? 'active open' : '' }}">
             <a href="{{ route('all.cancled.order') }}" class="menu-link">
                 <i class="menu-icon fa-solid fa-rectangle-xmark"></i>
                 <div data-i18n="Email">Cancled Orders</div>
             </a>
         </li>
         <!-- Order end -->
+
+         <!-- Report start -->
+         <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Reports</span>
+        </li>
+
+        <li class="menu-item {{ request()->routeIs('report.total.sale') ? 'active open' : '' }}">
+            <a href="{{ route('report.total.sale') }}" class="menu-link">
+                <i class="menu-icon fa-solid fa-cart-shopping"></i>
+                <div data-i18n="Email">Sales</div>
+            </a>
+        </li>
+
     </ul>
 
 </aside>

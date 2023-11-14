@@ -20,7 +20,8 @@ class Product extends Model
         'subcategory_id',
         'image',
         'slug',
-        'status'
+        'status',
+        'created_at'
     ];
 
     public function geProductList()

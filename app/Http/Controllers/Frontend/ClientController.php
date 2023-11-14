@@ -112,11 +112,12 @@ class ClientController extends Controller
         $shippingAddress = Shipping::where('user_id', $userId)->first();
         $checkTotalQuantity = $request->total_quantity;
         $checkTotalPrice = $request->total_price;
-        
+
         $result = Order::insert([
             'user_id'      => $userId,
             'quantity'     => $request->total_quantity,
-            'total_price'  => $request->total_price
+            'total_price'  => $request->total_price,
+            'created_at'   => now()
         ]);
 
         if ($result) {
@@ -136,27 +137,34 @@ class ClientController extends Controller
                     'address'      => $shippingAddress->address,
                     'postal_code'  => $shippingAddress->postal_code,
                     'quantity'     => $cartItem->quantity,
-                    'price'        => $cartItem->price
+                    'price'        => $cartItem->price,
+                    'created_at'   => now()
                 ]);
 
                 // Delete form cart after place order
                 $cartId = $cartItem->id;
                 Cart::findOrFail($cartId)->delete();
             }
-        } 
+        }
 
         //Delete shipping address after place order
         Shipping::where('user_id', $userId)->first()->delete();
 
-        // Get date after order placed
-        $placeOrders = $this->orderModel->getPlacedOrders($userId,$checkTotalQuantity,$checkTotalPrice);
-       
-        $placeOrderId = $placeOrders->id;
-        $placeOrder   = (object) ($placeOrders);
+        if (!empty($checkTotalQuantity)) {
 
-        $placeOrderDetails = OrderProduct::where('order_id', $placeOrderId)->get();
-        
-        return view('frontend.user.checkout', compact('checkTotalQuantity', 'checkTotalPrice'));
+            // Get date after order placed
+            $placeOrders = $this->orderModel->getPlacedOrders($userId, $checkTotalQuantity, $checkTotalPrice);
+
+            $placeOrderId = $placeOrders->id;
+            $placeOrder   = (object) ($placeOrders);
+
+            $placeOrderDetails = OrderProduct::where('order_id', $placeOrderId)->get();
+
+            return view('frontend.user.checkout', compact('checkTotalQuantity', 'checkTotalPrice'));
+
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function userProfile()

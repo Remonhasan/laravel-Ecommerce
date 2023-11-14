@@ -63,7 +63,8 @@ class SubCategoryController extends Controller
                     'name'        => $request->name,
                     'category_id' => $categoryId,
                     'slug'        => strtolower(str_replace(' ', '-', $request->name)),
-                    'status'      => $request->status
+                    'status'      => $request->status,
+                    'created_at'  => now()
                 ]);
 
                 Category::where('id', $categoryId)->increment('subcategory_count', 1);

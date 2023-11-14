@@ -93,12 +93,14 @@
         <div class="card mt-3">
             <h5 class="card-header">Recent Orders</h5>
             <table class="table">
+                <thead class="table-primary">
                 <tr>
                     <th>Customer Name & Invoice</th>
                     <th>Product & Quantity</th>
                     <th>Total Price</th>
                     <th>Status</th>
                 </tr>
+                </thead>
                 <tbody class="table-border-bottom-0">
                     <tr>
                         <td>

@@ -55,9 +55,10 @@ class CategoryController extends Controller
                 DB::beginTransaction();
 
                 Category::insert([
-                    'name'   => $request->name,
-                    'slug'   => strtolower(str_replace(' ', '-', $request->name)),
-                    'status' => $request->status
+                    'name'       => $request->name,
+                    'slug'       => strtolower(str_replace(' ', '-', $request->name)),
+                    'status'     => $request->status,
+                    'created_at' => now()
                 ]);
 
                 DB::commit();

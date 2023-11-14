@@ -21,10 +21,28 @@
             </div>
         @endif
 
-        <div class="table-responsive text-nowrap">
-            <table class="table">
+        <div class="container">
+            <div class="row mb-4">
 
-                <thead class="table-light">
+                <div class="col-md-6">
+                    <label for="customerFilter">Filter by Name:</label>
+                    <input type="text" id="customerFilter" class="form-control" oninput="filterTable()">
+                </div>
+                <div class="col-md-6">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter" class="form-control" onchange="filterTable()">
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table" id="salesTable">
+
+                <thead class="table-primary">
                     <tr>
                         <th>Customer</th>
                         <th>Address</th>
@@ -86,5 +104,52 @@
     </div>
 </div>
 
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-12">
+            <span style="padding-top: 20px">
+                {{ $pendingOrders->links('pagination::bootstrap-5') }}
+            </span>
+        </div>
+    </div>
 
+</div>
 @endsection 
+
+@push('script')
+    <script>
+        function filterTable() {
+            var inputCustomer, inputStatus, filterCustomer, filterStatus, table, tr, tdCustomer, tdStatus, i,
+                txtValueCustomer, txtValueStatus;
+
+            inputCustomer = document.getElementById("customerFilter");
+            inputStatus   = document.getElementById("statusFilter");
+
+            filterCustomer = inputCustomer.value.toUpperCase();
+            filterStatus   = inputStatus.value.toUpperCase();    // Ensure comparison in uppercase
+
+            table = document.getElementById("salesTable");
+            tr    = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                tdCustomer = tr[i].getElementsByTagName("td")[1];  // Column index for Customer Name
+                tdStatus   = tr[i].getElementsByTagName("td")[5];  // Column index for Status
+
+                if (tdCustomer && tdStatus) {
+                    txtValueCustomer = tdCustomer.textContent || tdCustomer.innerText;
+                    txtValueStatus   = tdStatus.textContent || tdStatus.innerText;
+
+                    var customerMatch = txtValueCustomer.toUpperCase().indexOf(filterCustomer) > -1;
+                    var statusMatch   = (filterStatus === "" || (filterStatus === "ACTIVE" && txtValueStatus.trim() ===
+                        "Active") || (filterStatus === "PENDING" && txtValueStatus.trim() ===
+                        "pending") || (filterStatus === "INACTIVE" && txtValueStatus.trim() === "Inactive"));
+
+                    if (customerMatch && statusMatch) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+@endpush

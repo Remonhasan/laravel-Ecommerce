@@ -18,7 +18,8 @@ class OrderProduct extends Model
         'city',
         'postal_code',
         'quantity',
-        'price'
+        'price',
+        'created_at'
     ];
 
 

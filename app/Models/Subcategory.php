@@ -14,7 +14,8 @@ class Subcategory extends Model
         'name',
         'category_id',
         'slug',
-        'status'
+        'status',
+        'created_at'
     ];
 
     public function geSubcategoryList()

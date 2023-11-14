@@ -26,7 +26,7 @@ class OrderController extends Controller
     {
 
         // $pendingOrders = $this->orderModel->getPendingOrder();
-        $pendingOrders = Order::where('status', 'pending')->get();
+        $pendingOrders = Order::where('status', 'pending')->paginate(5);
         $orderId = $pendingOrders[0]['id'];
         $pendingOrderProducts = OrderProduct::where('order_id', $orderId)->get();
         $pendingOrderAddress = OrderProduct::where('order_id', $orderId)->first();
