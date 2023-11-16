@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('page_title')
-    Completed order
+Complete order
 @endsection
 
 @section('content')
@@ -9,11 +9,11 @@
 <div class="container-xxl flex-grow-1 container-p-y">
 
     <div class="d-flex justify-content-between align-items-center">
-        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Oders /</span> Completed</h4>
+        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Oders /</span> Complete</h4>
     </div>
 
     <div class="card shadow">
-        <h5 class="card-header">Completed Orders</h5>
+        <h5 class="card-header">Complete Orders</h5>
 
         @if (session()->has('message'))
             <div class="alert alert-success">
@@ -21,12 +21,30 @@
             </div>
         @endif
 
-        <div class="table-responsive text-nowrap">
-            <table class="table">
+        <div class="container">
+            <div class="row mb-4">
 
-                <thead class="table-light">
+                <div class="col-md-6">
+                    <label for="customerFilter">Filter by Name:</label>
+                    <input type="text" id="customerFilter" class="form-control" oninput="filterTable()">
+                </div>
+                <div class="col-md-6">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter" class="form-control" onchange="filterTable()">
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table" id="salesTable">
+
+                <thead class="table-primary">
                     <tr>
-                        <th>Invoice & Customer</th>
+                        <th>Customer</th>
                         <th>Address</th>
                         <th>Product Name</th>
                         <th>Quantity</th>
@@ -36,26 +54,37 @@
                 </thead>
 
                 <tbody class="table-border-bottom-0">
-                    @foreach ($completedOrders as $completedOrder)
+                    @foreach ($completedOrders as $completeOrder)
                         <tr>
+                            @php 
+                             $userName = App\Models\User::where('id', $completeOrder->user_id)->value('name');
+                            @endphp 
                             <td>
-                                <span class="badge bg-label-info"># {{ $completedOrder->invoice_code ?? '' }}</span> 
-                                </br>
-                                {{ $completedOrder->user_name }}
+                                <span class="badge bg-label-info">{{ $completeOrder->invoice_code }}</span>
+                                {{ $userName }}
                             </td>
                             <td>
                                 <ul>
-                                    <li>Phone Number : {{ $completedOrder->phone_number}}</li>
-                                    <li>Address : {{ $completedOrder->address}}</li>
-                                    <li>City : {{ $completedOrder->city}}</li>
-                                    <li>Postal Code : {{ $completedOrder->postal_code}}</li>
+                                    <li>Phone Number : {{ $completedOrderAddress->phone_number}}</li>
+                                    <li>Address : {{ $completedOrderAddress->address}}</li>
+                                    <li>City : {{ $completedOrderAddress->city}}</li>
+                                    <li>Postal Code : {{ $completedOrderAddress->postal_code}}</li>
                                 </ul>
                             </td>
-                            <td>{{ $completedOrder->product_name }}</td>
-                            <td>{{ $completedOrder->quantity }}</td>
-                            <td>{{ $completedOrder->total_price }}</td>
                             <td>
-                                <span class="badge bg-label-warning">{{ $completedOrder->status }}</span>
+                                @foreach($completedOrderProducts as $completedOrderProduct )
+                                <ul>
+                                    @php 
+                                     $productName = App\Models\Product::where('id', $completedOrderProduct->product_id)->value('name');
+                                    @endphp 
+                                    <li>{{ $productName }}</li>
+                                </ul>
+                                @endforeach
+                            </td>
+                            <td>{{ $completeOrder->quantity }}</td>
+                            <td>{{ $completeOrder->total_price }}</td>
+                            <td>
+                                <span class="badge bg-label-warning">{{ $completeOrder->status }}</span>
                             </td>
                         </tr>
                     @endforeach
@@ -66,5 +95,52 @@
     </div>
 </div>
 
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-12">
+            <span style="padding-top: 20px">
+                {{ $completedOrders->links('pagination::bootstrap-5') }}
+            </span>
+        </div>
+    </div>
 
+</div>
 @endsection 
+
+@push('script')
+    <script>
+        function filterTable() {
+            var inputCustomer, inputStatus, filterCustomer, filterStatus, table, tr, tdCustomer, tdStatus, i,
+                txtValueCustomer, txtValueStatus;
+
+            inputCustomer = document.getElementById("customerFilter");
+            inputStatus   = document.getElementById("statusFilter");
+
+            filterCustomer = inputCustomer.value.toUpperCase();
+            filterStatus   = inputStatus.value.toUpperCase();    // Ensure comparison in uppercase
+
+            table = document.getElementById("salesTable");
+            tr    = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                tdCustomer = tr[i].getElementsByTagName("td")[1];  // Column index for Customer Name
+                tdStatus   = tr[i].getElementsByTagName("td")[5];  // Column index for Status
+
+                if (tdCustomer && tdStatus) {
+                    txtValueCustomer = tdCustomer.textContent || tdCustomer.innerText;
+                    txtValueStatus   = tdStatus.textContent || tdStatus.innerText;
+
+                    var customerMatch = txtValueCustomer.toUpperCase().indexOf(filterCustomer) > -1;
+                    var statusMatch   = (filterStatus === "" || (filterStatus === "ACTIVE" && txtValueStatus.trim() ===
+                        "Active") || (filterStatus === "PENDING" && txtValueStatus.trim() ===
+                        "pending") || (filterStatus === "INACTIVE" && txtValueStatus.trim() === "Inactive"));
+
+                    if (customerMatch && statusMatch) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+@endpush
