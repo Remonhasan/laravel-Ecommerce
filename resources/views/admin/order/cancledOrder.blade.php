@@ -54,6 +54,7 @@ Cancle order
                 </thead>
 
                 <tbody class="table-border-bottom-0">
+                    @if(!empty($cancledOrders))
                     @foreach ($cancledOrders as $cancledOrder)
                         <tr>
                             @php 
@@ -88,6 +89,7 @@ Cancle order
                             </td>
                         </tr>
                     @endforeach
+                    @endif
                 </tbody>
 
             </table>
@@ -95,6 +97,7 @@ Cancle order
     </div>
 </div>
 
+    @if(!empty($cancledOrders))
     <div class="row" style="margin-top: 15px">
         <div class="col-md-12">
             <span style="padding-top: 20px">
@@ -102,6 +105,7 @@ Cancle order
             </span>
         </div>
     </div>
+    @endif
 
 </div>
 @endsection 
