@@ -50,7 +50,7 @@ php artisan migrate
 8. Run `db::seed` 
 
 ```bash
-php artisan db:seed
+php artisan db::seed 
 ```
 
 9. use the laravel `pagination` for using pagination.
