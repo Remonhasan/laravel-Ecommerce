@@ -69,9 +69,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('edit.category', $category->id) }}" class="btn btn-info mr-3">
+                                        {{-- <a href="{{ route('edit.category', $category->id) }}" class="btn btn-info mr-3">
                                             <i class="fa-solid fa-eye"></i>
-                                        </a>
+                                        </a> --}}
                                         <a href="{{ route('edit.category', $category->id) }}" class="btn btn-primary mr-3">
                                             <i class="fa-solid fa-file-pen"></i>
                                         </a>
