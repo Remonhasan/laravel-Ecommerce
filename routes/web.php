@@ -119,10 +119,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
      // Order
      Route::controller(ReportController::class)->group(function () {
         Route::get('/admin/report/total-sales', 'totalSaleReport')->name('report.total.sale');
-        Route::get('/admin/order/approve/{id}', 'approvePendingOrder')->name('approve.order');
-        Route::get('/admin/order/cancle/{id}', 'cancledPendingOrder')->name('cancled.order');
-        Route::get('/admin/order/all-complete', 'allCompletedOrder')->name('all.completed.order');
-        Route::get('/admin/order/all-cancle', 'allCancledOrder')->name('all.cancled.order');
     });
 });
 

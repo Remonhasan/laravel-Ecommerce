@@ -14,7 +14,7 @@
                         <p class="mb-4">You have got <span class="fw-medium">nDolish</span> admin access. Check your
                             your profile for more information.</p>
 
-                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Profile</a>
+                        <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-primary">View Profile</a>
                     </div>
                 </div>
                 <div class="col-sm-5 text-center text-sm-left">
@@ -90,7 +90,8 @@
                 </div>
             </div>
         </div>
-        <div class="card mt-3">
+
+        {{-- <div class="card mt-3">
             <h5 class="card-header">Recent Orders</h5>
             <table class="table">
                 <thead class="table-primary">
@@ -119,7 +120,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> --}}
 
     </div>
 @endsection
