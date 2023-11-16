@@ -58,21 +58,31 @@ class OrderController extends Controller
     public function allCompletedOrder()
     {
 
-        $completedOrders        = Order::where('status', 'pending')->paginate(5);
-        $orderId                = $completedOrders[0]['id'];
-        $completedOrderProducts = OrderProduct::where('order_id', $orderId)->get();
-        $completedOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
+        $completedOrders        = Order::where('status', 'approved')->paginate(5);
 
-        return view('admin.order.completedOrder', compact('completedOrders', 'completedOrderProducts', 'completedOrderAddress'));
+        if (filled($completedOrders)) {
+            $orderId                = $completedOrders[0]['id'];
+            $completedOrderProducts = OrderProduct::where('order_id', $orderId)->get();
+            $completedOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
+
+            return view('admin.order.completedOrder', compact('completedOrders', 'completedOrderProducts', 'completedOrderAddress'));
+        }
+
+        return view('admin.order.completedOrder');
     }
 
     public function allCancledOrder()
     {
-        $cancledOrders        = Order::where('status', 'pending')->paginate(5);
-        $orderId              = $cancledOrders[0]['id'];
-        $cancledOrderProducts = OrderProduct::where('order_id', $orderId)->get();
-        $cancledOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
+        $cancledOrders        = Order::where('status', 'cancled')->paginate(5);
 
-        return view('admin.order.cancledOrder', compact('cancledOrders', 'cancledOrderProducts', 'cancledOrderAddress'));
+        if (filled($cancledOrders)) {
+            $orderId              = $cancledOrders[0]['id'];
+            $cancledOrderProducts = OrderProduct::where('order_id', $orderId)->get();
+            $cancledOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
+
+            return view('admin.order.cancledOrder', compact('cancledOrders', 'cancledOrderProducts', 'cancledOrderAddress'));
+        }
+        
+        return view('admin.order.cancledOrder');
     }
 }

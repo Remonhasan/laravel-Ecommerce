@@ -55,6 +55,7 @@
                 </thead>
 
                 <tbody class="table-border-bottom-0">
+                    @if(!empty($pendingOrders))
                     @foreach ($pendingOrders as $pendingOrder)
                         <tr>
                             @php 
@@ -97,6 +98,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    @endif
                 </tbody>
 
             </table>
@@ -104,6 +106,7 @@
     </div>
 </div>
 
+    @if(!empty($pendingOrders))
     <div class="row" style="margin-top: 15px">
         <div class="col-md-12">
             <span style="padding-top: 20px">
@@ -111,6 +114,7 @@
             </span>
         </div>
     </div>
+    @endif
 
 </div>
 @endsection 

@@ -53,7 +53,9 @@ Complete order
                     </tr>
                 </thead>
 
+               
                 <tbody class="table-border-bottom-0">
+                    @if (!empty($completedOrders))
                     @foreach ($completedOrders as $completeOrder)
                         <tr>
                             @php 
@@ -88,13 +90,17 @@ Complete order
                             </td>
                         </tr>
                     @endforeach
+                    @endif
                 </tbody>
+               
+              
 
             </table>
         </div>
     </div>
 </div>
 
+    @if (!empty($completedOrders))
     <div class="row" style="margin-top: 15px">
         <div class="col-md-12">
             <span style="padding-top: 20px">
@@ -102,6 +108,8 @@ Complete order
             </span>
         </div>
     </div>
+    @endif
+   
 
 </div>
 @endsection 
