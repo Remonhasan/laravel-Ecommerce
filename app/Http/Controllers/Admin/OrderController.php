@@ -25,11 +25,16 @@ class OrderController extends Controller
     public function pendingOrder()
     {
         $pendingOrders        = Order::where('status', 'pending')->paginate(5);
-        $orderId              = $pendingOrders[0]['id'];
-        $pendingOrderProducts = OrderProduct::where('order_id', $orderId)->get();
-        $pendingOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
 
-        return view('admin.order.pendingOrder', compact('pendingOrders', 'pendingOrderProducts', 'pendingOrderAddress'));
+        if (filled($pendingOrders)) {
+            $orderId              = $pendingOrders[0]['id'];
+            $pendingOrderProducts = OrderProduct::where('order_id', $orderId)->get();
+            $pendingOrderAddress  = OrderProduct::where('order_id', $orderId)->first();
+
+            return view('admin.order.pendingOrder', compact('pendingOrders', 'pendingOrderProducts', 'pendingOrderAddress'));
+        }
+
+        return view('admin.dashboard');
     }
 
     public function approvePendingOrder($id)
@@ -52,7 +57,7 @@ class OrderController extends Controller
             'status' => 'cancled'
         ]);
 
-        return redirect()->route('pending.order')->with('message', 'Order cancled successfully');
+        return redirect()->route('all.cancled.order')->with('message', 'Order cancled successfully');
     }
 
     public function allCompletedOrder()
@@ -82,7 +87,7 @@ class OrderController extends Controller
 
             return view('admin.order.cancledOrder', compact('cancledOrders', 'cancledOrderProducts', 'cancledOrderAddress'));
         }
-        
+
         return view('admin.order.cancledOrder');
     }
 }
