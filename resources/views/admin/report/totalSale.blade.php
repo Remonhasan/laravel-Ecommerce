@@ -29,8 +29,8 @@
                         <select id="statusFilter" class="form-control" onchange="filterTable()">
                             <option value="">All</option>
                             <option value="pending">Pending</option>
-                            <option value="Shipped">Shipped</option>
-                            <option value="Delivered">Delivered</option>
+                            <option value="approved">Approved</option>
+                            <option value="cancled">Cancled</option>
                         </select>
                     </div>
                 </div>
